@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a4b5c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Conrad Courts">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<title>Conrad Maldives · Court Booking</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: radial-gradient(circle at 15% 25%, #e6f2f8, #c6dce9); min-height: 100vh; padding: 12px; color: #0f2e3a; -webkit-text-size-adjust: 100%; }
+    .app { max-width: 1400px; margin: 0 auto; background: rgba(255,255,255,0.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 28px; box-shadow: 0 24px 60px -20px rgba(0,30,40,0.4); padding: 18px 16px 26px; border: 1px solid rgba(255,255,255,0.8); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand i { font-size: 1.6rem; color: #0a4b5c; }
+    .brand h1 { font-size: 1.15rem; font-weight: 600; }
+    .brand span { font-size: 0.7rem; background: #0a4b5c15; padding: 3px 10px; border-radius: 40px; color: #2d5f6e; }
+    .date-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 8px; margin-bottom: 10px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+    .date-strip::-webkit-scrollbar { height: 4px; } .date-strip::-webkit-scrollbar-thumb { background: #b8d2df; border-radius: 4px; }
+    .date-pill { flex: 0 0 auto; min-width: 62px; padding: 8px 10px; border-radius: 14px; background: white; border: 1.5px solid #dceaf1; cursor: pointer; text-align: center; font-size: 0.7rem; color: #2e5e6b; font-weight: 600; transition: 0.15s; touch-action: manipulation; }
+    .date-pill .dow,.date-pill .mon { display: block; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b8f9b; }
+    .date-pill .dom { display: block; font-size: 1.05rem; font-weight: 800; color: #0a4b5c; margin: 1px 0; }
+    .date-pill.active { background: #0a4b5c; border-color: #0a4b5c; } .date-pill.active .dow,.date-pill.active .mon { color: #bfe0ea; } .date-pill.active .dom { color: white; } .date-pill.today { border-color: #0a7b8c; }
+    .form-wrap { position: relative; margin-bottom: 14px; }
+    .form-bar { background: white; border-radius: 22px; padding: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; box-shadow: 0 10px 30px -12px rgba(0,30,40,0.15); border: 1px solid #e2edf2; }
+    .form-bar .field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 100%; min-width: 0; } .form-bar .field.half { flex: 1 1 calc(50% - 5px); }
+    .form-bar .field label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #2b6877; padding-left: 4px; }
+    .form-bar .field input,.form-bar .field select { padding: 12px 14px; border-radius: 40px; border: 1.5px solid #d3e2e9; font-size: 0.95rem; font-weight: 500; background: white; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
+    .form-bar .field input:focus,.form-bar .field select:focus { border-color: #0a7b8c; box-shadow: 0 0 0 3px #0a7b8c20; } .form-bar .field input[readonly] { background: #f2f8fc; font-weight: 600; color: #0a4b5c; }
+    .clear-corner { position: absolute; top: -8px; right: -6px; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 1.5px solid #cfdfe7; color: #2e5e6b; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; box-shadow: 0 4px 10px rgba(0,30,40,0.12); transition: 0.2s; z-index: 5; }
+    .clear-corner:active { background: #0a4b5c; color: white; }
+    .btn { padding: 12px 22px; border-radius: 40px; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; width: 100%; touch-action: manipulation; }
+    .btn-primary { background: #0a4b5c; color: white; box-shadow: 0 8px 18px -8px #0a4b5c; } .btn-primary:active:not(:disabled) { background: #0e5f73; transform: scale(0.98); } .btn-primary:disabled { background: #9bb6c2; cursor: not-allowed; }
+    .btn-danger { background: #b34a4a; color: white; } .btn-danger:active { background: #9e3b3b; } .btn-outline { background: transparent; border: 1.5px solid #0a4b5c; color: #0a4b5c; } .btn-outline:active { background: #0a4b5c10; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; } .tab { flex: 1; padding: 11px 12px; border-radius: 40px; border: 1px solid #cfdfe7; background: white; color: #2e5e6b; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.85rem; touch-action: manipulation; } .tab.active { background: #0a4b5c; color: white; border-color: #0a4b5c; }
+    .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.72rem; color: #2e5e6b; } .legend .item { display: flex; align-items: center; gap: 5px; } .legend .dot { width: 12px; height: 12px; border-radius: 3px; }
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(105px,1fr)); gap: 8px; margin-bottom: 18px; }
+    .slot { border-radius: 14px; padding: 10px 6px; text-align: center; border: 2px solid #e2edf2; background: white; cursor: pointer; transition: 0.12s; user-select: none; -webkit-user-select: none; display: flex; flex-direction: column; gap: 2px; position: relative; touch-action: manipulation; }
+    .slot:active { transform: scale(0.97); } .slot .time { font-weight: 700; font-size: 0.78rem; } .slot .meta { font-size: 0.62rem; color: #4a7c8a; line-height: 1.3; }
+    .slot .badge { font-size: 0.55rem; padding: 2px 6px; border-radius: 20px; font-weight: 700; text-transform: uppercase; margin-top: 2px; display: inline-block; align-self: center; }
+    .slot.selected { border-color: #0a7b8c!important; box-shadow: 0 0 0 3px #0a7b8c35; transform: translateY(-1px); } .slot.booked { cursor: pointer; }
+    .slot.booked::before { content: "BOOKED"; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); font-size: 0.48rem; font-weight: 800; letter-spacing: 1px; background: #0a4b5c; color: white; padding: 2px 6px; border-radius: 0 0 6px 6px; }
+    .type-casual { background: #E3F2FD; border-color: #64B5F6; } .type-casual .badge { background: #64B5F6; color: white; }
+    .type-hitting { background: #E8F5E9; border-color: #66BB6A; } .type-hitting .badge { background: #66BB6A; color: white; }
+    .type-lesson { background: #FFF3E0; border-color: #FFA726; } .type-lesson .badge { background: #FFA726; color: white; }
+    .type-clinic { background: #F3E5F5; border-color: #AB47BC; } .type-clinic .badge { background: #AB47BC; color: white; }
+    .bookings-section { background: white; border-radius: 20px; padding: 14px; border: 1px solid #e2edf2; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; } .section-title h2 { font-size: 1rem; color: #0a4b5c; } .section-title button { width: auto; padding: 7px 14px; font-size: 0.72rem; }
+    .booking-row { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 14px; border: 1px solid #eef4f8; margin-bottom: 8px; font-size: 0.85rem; }
+    .booking-row .row-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; } .booking-row .row-bottom { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .booking-row .time-block { font-weight: 700; color: #0a4b5c; font-size: 0.92rem; } .booking-row .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+    .chip-room { background: #0a4b5c; color: white; } .chip-players { background: #eef4f8; color: #2e5e6b; } .chip-type { color: white; } .chip-type.casual { background: #64B5F6; } .chip-type.hitting { background: #66BB6A; } .chip-type.lesson { background: #FFA726; } .chip-type.clinic { background: #AB47BC; } .chip-court { background: #f0f7fa; color: #2e5e6b; }
+    .empty-msg { text-align: center; color: #8aaab8; padding: 18px; font-style: italic; font-size: 0.85rem; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 20px; border-radius: 40px; background: #0a4b5c; color: white; font-weight: 600; font-size: 0.85rem; box-shadow: 0 12px 30px -8px rgba(0,30,40,0.5); opacity: 0; transition: opacity 0.3s; z-index: 1000; pointer-events: none; max-width: 90vw; text-align: center; }
+    .toast.show { opacity: 1; } .toast.error { background: #b34a4a; }
+    @media (min-width:700px) {
+      .app { padding: 26px 28px 34px; border-radius: 36px; } .brand i { font-size: 2rem; } .brand h1 { font-size: 1.6rem; } .form-bar { padding: 16px 20px; border-radius: 28px; }
+      .form-bar .field,.form-bar .field.half { flex: 1 1 130px; } .btn { width: auto; } .slot-grid { grid-template-columns: repeat(auto-fill,minmax(140px,1fr)); gap: 10px; } .slot { padding: 12px 8px; }
+      .slot .time { font-size: 0.9rem; } .slot .meta { font-size: 0.68rem; } .slot .badge { font-size: 0.62rem; } .slot.booked::before { font-size: 0.55rem; }
+      .tab { font-size: 0.95rem; padding: 11px 26px; } .booking-row { flex-direction: row; justify-content: space-between; align-items: center; gap: 10px; }
+      .booking-row .row-top { flex: 1; } .booking-row .row-bottom { flex: 0 0 auto; justify-content: flex-end; } .section-title h2 { font-size: 1.15rem; } .date-pill { min-width: 74px; padding: 10px 12px; }
+    }
+</style>
+</head>
+<body>
+<div class="app">
+    <div class="header"><div class="brand"><i class="fas fa-umbrella-beach"></i><h1>Conrad Maldives</h1><span>Court Booking</span></div></div>
+    <div class="date-strip" id="dateStrip"></div>
+    <div class="form-wrap">
+        <div class="form-bar">
+            <div class="field half"><label><i class="fas fa-calendar"></i> Date</label><input type="date" id="dateInput"></div>
+            <div class="field half"><label><i class="fas fa-door-open"></i> Room</label><input type="text" id="roomInput" placeholder="e.g. 212" inputmode="numeric"></div>
+            <div class="field half"><label><i class="fas fa-user-friends"></i> Players</label><select id="playersInput"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+            <div class="field half"><label><i class="fas fa-tag"></i> Type</label><select id="typeInput"><option value="casual">Casual</option><option value="hitting">Hitting</option><option value="lesson">Lesson</option><option value="clinic">Clinic</option></select></div>
+            <div class="field"><label><i class="fas fa-clock"></i> Selected Time</label><input type="text" id="selectedTime" readonly placeholder="Tap slots below"></div>
+            <button type="button" class="btn btn-primary" id="bookBtn" disabled><i class="fas fa-calendar-check"></i> Book</button>
+        </div>
+        <button type="button" class="clear-corner" id="clearBtn" title="Clear"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="tabs"><button type="button" class="tab active" data-court="tennis"><i class="fas fa-table-tennis"></i> Tennis</button><button type="button" class="tab" data-court="paddle"><i class="fas fa-table-tennis" style="transform:rotate(90deg)"></i> Padel</button></div>
+    <div class="legend"><div class="item"><div class="dot" style="background:#64B5F6"></div> Casual</div><div class="item"><div class="dot" style="background:#66BB6A"></div> Hitting</div><div class="item"><div class="dot" style="background:#FFA726"></div> Lesson</div><div class="item"><div class="dot" style="background:#AB47BC"></div> Clinic</div></div>
+    <div class="slot-grid" id="slotGrid"></div>
+    <div class="bookings-section">
+        <div class="section-title"><h2><i class="fas fa-list-check"></i> Bookings · <span id="listDate"></span></h2><button type="button" class="btn btn-outline" id="showAllBtn"><i class="fas fa-database"></i> All</button></div>
+        <div id="bookingsList"><div class="empty-msg">No bookings yet</div></div>
+    </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STORAGE_KEY = 'conrad_bookings';
+function loadAllBookings(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw):[]}catch(e){console.error(e);return[]}}
+function saveAllBookings(list){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list))}catch(e){console.error(e);toast('Could not save booking on this device',true)}}
+function getLocalISODate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+const state={court:'tennis',date:getLocalISODate(new Date()),slots:[],selected:new Set(),bookings:[],allBookings:[],showAll:false,dateStrip:[]};
+function toast(msg,isError=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(isError?' error':'');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),3000)}
+function generateSlots(){const a=[];for(let h=6;h<21;h++){a.push({start:`${String(h).padStart(2,'0')}:00`,end:`${String(h).padStart(2,'0')}:30`},{start:`${String(h).padStart(2,'0')}:30`,end:`${String(h+1).padStart(2,'0')}:00`})}return a}
+function getBookingForSlot(s){return state.bookings.find(b=>b.start_time<s.end&&b.end_time>s.start)}
+function refreshBookings(){state.allBookings=loadAllBookings();state.bookings=(state.showAll?state.allBookings:state.allBookings.filter(b=>b.court===state.court&&b.date===state.date)).slice().sort((a,b)=>a.date.localeCompare(b.date)||a.start_time.localeCompare(b.start_time))}
+function buildDateStrip(){const a=[],today=new Date();today.setHours(0,0,0,0);for(let i=0;i<15;i++){const d=new Date(today);d.setDate(d.getDate()+i);a.push({iso:getLocalISODate(d),dow:d.toLocaleDateString('en-US',{weekday:'short'}),dom:d.getDate(),mon:d.toLocaleDateString('en-US',{month:'short'}),isToday:i===0})}state.dateStrip=a}
+function renderDateStrip(){const strip=document.getElementById('dateStrip');strip.innerHTML=state.dateStrip.map(d=>`<div class="date-pill ${d.iso===state.date?'active':''} ${d.isToday?'today':''}" data-date="${d.iso}"><span class="dow">${d.dow}</span><span class="dom">${d.dom}</span><span class="mon">${d.mon}</span></div>`).join('');strip.querySelectorAll('.date-pill').forEach(el=>el.addEventListener('click',()=>selectDate(el.dataset.date)));const active=strip.querySelector('.date-pill.active');if(active){const sr=strip.getBoundingClientRect(),ar=active.getBoundingClientRect();if(ar.left<sr.left||ar.right>sr.right)strip.scrollLeft+=(ar.left-sr.left)-16}}
+function selectDate(iso){if(!iso)return;state.date=iso;document.getElementById('dateInput').value=iso;state.selected.clear();refresh()}
+function buildTimeRangeDisplay(){const sel=Array.from(state.selected).sort(),groups=[];let cur=null;sel.forEach(start=>{const slot=state.slots.find(s=>s.start===start);if(!slot)return;if(cur&&cur.end===slot.start){cur.end=slot.end;cur.count++}else{if(cur)groups.push(cur);cur={start:slot.start,end:slot.end,count:1}}});if(cur)groups.push(cur);return groups.map(g=>{const dur=g.count*30,d=dur>=60?`${Math.floor(dur/60)}h${dur%60?dur%60+'m':''}`:`${dur}m`;return`${g.start} – ${g.end} (${d})`}).join(' · ')}
+function renderSlots(){const grid=document.getElementById('slotGrid');grid.innerHTML='';state.slots.forEach(slot=>{const b=getBookingForSlot(slot),el=document.createElement('div');el.className='slot';if(b){el.classList.add('booked','type-'+b.booking_type);el.innerHTML=`<div class="time">${slot.start} – ${slot.end}</div><div class="meta">Room ${escapeHTML(b.room)} · ${escapeHTML(String(b.players))}p</div><div class="badge">${escapeHTML(b.booking_type)}</div>`;el.addEventListener('click',e=>{e.stopPropagation();document.getElementById('roomInput').value=b.room;document.getElementById('playersInput').value=b.players;document.getElementById('typeInput').value=b.booking_type;state.selected.clear();state.selected.add(slot.start);renderSlots();updateSelectionUI();toast(`Room ${b.room} · ${slot.start}–${slot.end}`)})}else{if(state.selected.has(slot.start))el.classList.add('selected');el.innerHTML=`<div class="time">${slot.start} – ${slot.end}</div><div class="meta">Available</div>`;el.addEventListener('click',e=>{e.stopPropagation();state.selected.has(slot.start)?state.selected.delete(slot.start):state.selected.add(slot.start);renderSlots();updateSelectionUI()})}grid.appendChild(el)})}
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function updateSelectionUI(){const d=document.getElementById('selectedTime'),b=document.getElementById('bookBtn');if(!state.selected.size){d.value='';d.placeholder='Tap slots below';b.disabled=true;return}d.value=buildTimeRangeDisplay();b.disabled=false}
+function renderBookingsList(){const list=document.getElementById('bookingsList'),d=state.showAll?'All':new Date(state.date+'T00:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});document.getElementById('listDate').textContent=d;if(!state.bookings.length){list.innerHTML='<div class="empty-msg">No bookings yet</div>';return}list.innerHTML=state.bookings.map(b=>`<div class="booking-row type-${b.booking_type}"><div class="row-top"><div class="time-block">${escapeHTML(b.start_time)} – ${escapeHTML(b.end_time)}</div><button type="button" class="btn btn-danger delete-booking" data-id="${Number(b.id)}" style="width:auto;padding:6px 12px;font-size:0.72rem"><i class="fas fa-trash"></i></button></div><div class="row-bottom"><span class="chip chip-room"><i class="fas fa-door-open"></i> Room ${escapeHTML(b.room)}</span><span class="chip chip-players"><i class="fas fa-user"></i> ${escapeHTML(String(b.players))} players</span><span class="chip chip-type ${b.booking_type}">${escapeHTML(b.booking_type)}</span><span class="chip chip-court"><i class="fas fa-table-tennis"></i> ${b.court==='tennis'?'Tennis':'Padel'}</span><span class="chip chip-court">${escapeHTML(b.date)}</span></div></div>`).join('');list.querySelectorAll('.delete-booking').forEach(btn=>btn.addEventListener('click',()=>deleteBooking(Number(btn.dataset.id))))}
+function book(){const room=document.getElementById('roomInput').value.trim(),players=document.getElementById('playersInput').value,booking_type=document.getElementById('typeInput').value;if(!room){toast('Enter a room number',true);document.getElementById('roomInput').focus();return}if(!state.selected.size){toast('Select at least one slot',true);return}const sorted=Array.from(state.selected).sort();for(const start of sorted){const s=state.slots.find(x=>x.start===start),conflict=state.allBookings.find(b=>b.court===state.court&&b.date===state.date&&b.start_time<s.end&&b.end_time>s.start);if(conflict){toast(`❌ ${start} is already booked`,true);refresh();return}}const all=loadAllBookings(),now=Date.now(),rows=sorted.map((start,i)=>{const s=state.slots.find(x=>x.start===start);return{id:now+i,court:state.court,date:state.date,start_time:s.start,end_time:s.end,room,players,booking_type}});saveAllBookings(all.concat(rows));toast('✅ Booking saved on this device');state.selected.clear();document.getElementById('roomInput').value='';refresh()}
+function deleteBooking(id){if(!confirm('Cancel this booking?'))return;saveAllBookings(loadAllBookings().filter(b=>b.id!==id));toast('Booking cancelled on this device');refresh()}
+function refresh(){refreshBookings();renderDateStrip();renderSlots();renderBookingsList();updateSelectionUI()}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');state.court=t.dataset.court;state.selected.clear();refresh()}));
+const dateInput=document.getElementById('dateInput');dateInput.value=state.date;dateInput.addEventListener('change',()=>selectDate(dateInput.value));
+document.getElementById('bookBtn').addEventListener('click',book);
+document.getElementById('clearBtn').addEventListener('click',()=>{state.selected.clear();document.getElementById('roomInput').value='';renderSlots();updateSelectionUI();toast('Cleared')});
+document.getElementById('roomInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!document.getElementById('bookBtn').disabled)book()}});
+document.getElementById('showAllBtn').addEventListener('click',function(){state.showAll=!state.showAll;this.innerHTML=state.showAll?'<i class="fas fa-arrow-left"></i> Day':'<i class="fas fa-database"></i> All';refresh()});
+window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY)refresh()});
+state.slots=generateSlots();buildDateStrip();refresh();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('Service worker registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>
